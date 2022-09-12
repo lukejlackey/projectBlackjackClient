@@ -270,33 +270,30 @@ function showAccount(){
         login()
     }else{
         const rspn = document.querySelector( '#response' )
-        rspn.innerHTML = `
+        rspn.innerHTML =`
         <div class="container bg-dark rounded" id="greeting">
-            <h2 class="display-2 text-center">Welcome Back, User!</h2>
-        </div>
-        <div class="container d-flex justify-content-around py-5">
-            <button class="btn rounded bg-dark text-warning fs-1" onclick="playGame(event)">PLAY GAME</button>
+            <h2 class="display-2 text-center">Welcome Back, ${localStorage.getItem('name')}!</h2>
         </div>
         <div class="container bg-dark rounded" id="stats">
             <h2 class="display-2 text-center text-decoration-underline">Statistics</h2>
             <div class="d-flex justify-content-around">
                 <div class="container">
                     <h3 class="display-5 text-center text-decoration-underline">Wins:</h3>
-                    <p class="display-5 text-center" id="wins">0</p>
+                    <p class="display-5 text-center" id="wins">${localStorage.getItem('wins')}</p>
                     <h3 class="display-5 text-center text-decoration-underline">Blackjacks:</h3>
-                    <p class="display-5 text-center" id="blackjacks">0</p>
+                    <p class="display-5 text-center" id="blackjacks">${localStorage.getItem('blackjacks')}</p>
                 </div>
                 <div class="container">
                     <h3 class="display-5 text-center text-decoration-underline">W/L Ratio:</h3>
-                    <p class="display-5 text-center" id="wl_ratio">0</p>
+                    <p class="display-5 text-center" id="wl_ratio">TBD</p>
                     <h3 class="display-5 text-center text-decoration-underline">Last Game:</h3>
-                    <p class="display-5 text-center" id="last_game">0</p>
+                    <p class="display-5 text-center" id="last_game">TBD</p>
                 </div>
                 <div class="container">
                     <h3 class="display-5 text-center text-decoration-underline">Losses:</h3>
-                    <p class="display-5 text-center" id="Losses">0</p>
+                    <p class="display-5 text-center" id="Losses">${localStorage.getItem('losses')}</p>
                     <h3 class="display-5 text-center text-decoration-underline">Busts:</h3>
-                    <p class="display-5 text-center" id="busts">0</p>
+                    <p class="display-5 text-center" id="busts">${localStorage.getItem('busts')}</p>
                 </div>
             </div>
         </div>
@@ -328,14 +325,29 @@ async function playGame(event){
 
     rspn.innerHTML = `
         <div class="container rounded" id="gametable">
-        <form id="initDeal" onsubmit="dealCards(event)">
-            <input type="submit" value="DEAL" name="deal">
-        </form>
+            <form id="initDeal" onsubmit="dealCards(event)">
+                <input type="submit" value="DEAL" name="deal">
+            </form>
         </div>
     `
-    const gt = document.querySelector( '#gametable' )
+    let gt = document.querySelector( '#gametable' )
+    let row_n = 0
+    for(let i = 1; i <= parseInt(data['num_of_players']) + 1; i++){
+        if(i == 1 || (i - 1) % 3 == 0){
+            row_n += 1
+            let row = document.createElement('div')
+            row.classList.add('row')
+            row.setAttribute('id',`row${row_n}`)
+            gt.appendChild(row)
+        }
+        let col = document.createElement('div')
+        col.classList.add('col')
+        col.setAttribute('id',`player_slot${i}`)
+        let current_row = document.querySelector( `#row${row_n}` )
+        current_row.appendChild(col)
+    }
     for(const plr of game_players['players']){
-        const new_plr = document.createElement('div')
+        const new_plr = document.querySelector( `#player_slot${plr.seat}` )
         new_plr.innerHTML = `
         <div class="container d-flex flex-column align-items-center gap-4">
             <h3>Seat ${plr.seat}</h3>
@@ -351,7 +363,6 @@ async function playGame(event){
             </div>
         </div>
         `
-        gt.appendChild(new_plr)
         if(plr.user_id == localStorage.getItem('id')){
             localStorage.setItem('seat', plr.seat)
             const s = document.querySelector( `#seat${plr.seat}` )
@@ -420,6 +431,7 @@ async function sendMove(event, move){
                 const game_over = document.createElement('h3')
                 game_over.innerText = 'GAME OVER'
                 gt.appendChild(game_over)
+                gameOver()
             }
         }else{
             const hand = document.querySelector(`#hand${c}`)
@@ -434,4 +446,18 @@ async function sendMove(event, move){
             }
         }
     }
+}
+
+async function gameOver(){
+
+    const URL = `http://127.0.0.1:5000/play/${localStorage.getItem('id')}`;
+    const settings = {
+        method : 'GET',
+        headers : {
+            'Content-type' : 'application/json'
+        }
+    }
+    const response = await fetch( URL, settings );
+    const win_data = await response.json();
+    console.log(win_data)
 }
