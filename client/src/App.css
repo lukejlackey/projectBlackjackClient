@@ -1,0 +1,446 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: baseFont;
+}
+
+*:focus {
+  outline: none;
+}
+
+@font-face {
+  font-family: headingFont;
+  src: url('./fonts/Battlestar-0a84.ttf');
+}
+@font-face {
+  font-family: baseFont;
+  src: url('./fonts/HomestileRegular-PLam.ttf');
+}
+
+@keyframes glow {
+  from {
+  text-shadow: 0 0 1px #eeeeee, 0 0 2px #000000, 0 0 3px #000000, 0 0 4px #000000, 
+              0 0 2px hsla(0, 100%, 50%, 0.9), 0 0 3px hsla(0, 100%, 50%, 0.9), 0 0 4px hsla(0, 100%, 50%, 0.9);
+  }
+  to {
+  text-shadow: 0 0 2px #eeeeee, 0 0 3px hsla(0, 100%, 50%, 0.9), 0 0 4px hsla(0, 100%, 50%, 0.9), 0 0 5px hsla(0, 100%, 50%, 0.9), 
+              0 0 1px hsla(0, 100%, 50%, 0.9), 0 0 1px hsla(0, 100%, 50%, 0.9), 0 0 1px hsla(0, 100%, 50%, 0.9);
+  }
+}
+
+@keyframes glow2 {
+  from {
+  text-shadow: 0 0 1px #eeeeee, 0 0 2px #000000, 0 0 3px #000000, 0 0 4px #000000, 
+              0 0 2px hsl(116, 100%, 50%), 0 0 3px hsl(116, 100%, 50%), 0 0 4px hsl(116, 100%, 50%);
+  }
+  to {
+  text-shadow: 0 0 2px #eeeeee, 0 0 3px hsl(116, 100%, 50%), 0 0 4px hsl(116, 100%, 50%), 0 0 5px hsl(116, 100%, 50%), 
+              0 0 1px hsl(116, 100%, 50%), 0 0 1px hsl(116, 100%, 50%), 0 0 1px hsl(116, 100%, 50%);
+  }
+}
+
+@keyframes terminalBlink {
+  from {
+  color: limegreen;
+  }
+  to {
+  color: #165a16;
+  }
+}
+@keyframes terminalBlink2 {
+  from {
+  color: rgba(66, 63, 255, 0.9);
+  }
+  to {
+  color: rgba(66, 63, 255, 0.371);
+  }
+}
+
+body {
+  background-image: url('./assets/ship-panel.png');
+  color: rgba(66, 63, 255, 0.9);
+  text-align: center;
+  padding-bottom: 2em;
+}
+
+em {
+  font-size: 1.25em;
+  font-weight: lighter;
+  line-height: 1.5em;
+}
+
+p {
+  text-align: start;
+  font-size: 2.5em;
+  font-weight: lighter;
+  line-height: 1.5em;
+}
+
+label {
+  width: 40%;
+  text-align: center;
+  font-size: 2.5em;
+  font-weight: lighter;
+  line-height: 1.5em;
+}
+
+input {
+  width: 80%;
+  padding: .25em;
+  text-align: start;
+  font-size: 2.5em;
+  font-weight: lighter;
+  line-height: 1.5em;
+  color: hsl(116, 100%, 50%);
+  -webkit-animation: terminalBlink .75s infinite alternate;
+  -moz-animation: terminalBlink .75s infinite alternate;
+  animation: terminalBlink .75s infinite alternate;
+}
+
+input:focus {
+  border: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim.jfif') 30 round;
+  box-shadow: 0rem 0rem 1rem .25rem black;
+}
+
+input:autofill, input:focus:autofill {
+  -webkit-text-fill-color: hsl(116, 100%, 50%);
+  background-color: black !important;
+  box-shadow: 0rem 0rem 1rem .25rem black, 0 0 0 50px rgb(0, 0, 0) inset;
+  -webkit-animation: terminalBlink .75s infinite alternate;
+  -moz-animation: terminalBlink .75s infinite alternate;
+  animation: terminalBlink .75s infinite alternate;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+button {
+  margin-right: auto;
+  margin-left: auto;
+  padding: .5em;
+  font-size: 2.1em;
+  width: 25%;
+}
+
+.greenBtn {
+  color: hsl(116, 100%, 50%);
+  -webkit-animation: glow2 2s ease-in-out infinite alternate;
+  -moz-animation: glow2 2s ease-in-out infinite alternate;
+  animation: glow2 2s ease-in-out infinite alternate;
+}
+.redBtn {
+  color: hsla(0, 100%, 50%, 0.9);
+  -webkit-animation: glow 2s ease-in-out infinite alternate;
+  -moz-animation: glow 2s ease-in-out infinite alternate;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.screen {
+  background-color: black;
+  border: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim.jfif') 30 round;
+  box-shadow: 0rem 0rem 1rem .25rem black;
+  transition: 0.2s ease-in-out;
+}
+
+.navBar {
+  padding: 1em;
+  background-color: rgba(0, 0, 0, 0.548);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.navLink {
+  text-decoration: none;
+  font-size: 2em;
+  transition: 0.2s ease-in-out;
+}
+
+.navLink:visited {
+  color: inherit
+}
+
+.navLink:hover {
+  color: rgba(255, 1, 1, 0.9);
+}
+
+.mainTitle {
+  -webkit-animation: glow 2s ease-in-out infinite alternate;
+  -moz-animation: glow 2s ease-in-out infinite alternate;
+  animation: glow 2s ease-in-out infinite alternate;
+  color: hsla(0, 100%, 50%, 0.9);
+  border-top: .4vw solid transparent; 
+  border-bottom: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim.jfif') 30 round;
+  background-image: url('./assets/screen-texture.jpg');
+  background-size: cover;
+  font-family: headingFont;
+  box-shadow: 0rem 0rem 1rem .25rem black;
+  text-align: center;
+  padding: .25em;
+  font-size: 4em;
+  font-weight: lighter;
+}
+
+.subTitle {
+  line-height: 1em;
+  font-size: 4em;
+  font-weight: lighter;
+}
+
+.subTitle2 {
+  line-height: 1em;
+  font-size: 3.5em;
+  font-weight: lighter;
+}
+
+.flash_msgs {
+  color: rgba(255, 1, 1, 0.9);
+  text-shadow: 0 0 1px #eeeeee;
+  text-align: center;
+}
+
+.container {
+  width: 80%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  margin-right: auto;
+  margin-left: auto;
+  padding: .5em;
+  background-color: black;
+  border: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim.jfif') 30 round;
+  box-shadow: 0rem 0rem 1rem .25rem black;
+  text-align: center;
+}
+
+.generalFlex {
+  display: flex;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flexCol {
+  flex-direction: column;
+}
+
+.innerContainer {
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.game {
+  width: 80%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 1em;
+  background-color: hsla(240, 100%, 49%, 0.118);
+  border: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim.jfif') 30 round;
+  box-shadow: 0rem 0rem 1rem .25rem black;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.gameTable {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: .5em;
+  width: 100%;
+  background-color: rgba(49, 179, 71, 0.664);
+  border: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim-gold.png') 30 round;
+  box-shadow: 0rem 0rem 1rem .25rem black;
+}
+
+.playerCard {
+  padding: 1em;
+  width: 25%;
+  height: 15em;
+  min-width: 10em;
+  font-size: .75vw;
+  transition: 0.2s ease-in-out;
+}
+
+.playerCard:hover {
+  color: rgba(255, 1, 1, 0.9);
+}
+.userCard {
+  width: 25%;
+  height: 15em;
+  min-width: 10em;
+  font-size: .75vw;
+  transition: 0.2s ease-in-out;
+  border-image: url('./assets/metal-trim-gold.png') 30 round;
+  color: rgba(255, 1, 1, 0.9);
+}
+
+.cardItem {
+  font-size: .6vw;
+  text-align: center;
+  width: 4.75vw;
+  height: 6.75vw;
+  max-width: 10rem;
+  max-height: 18rem;
+  background-color: black;
+  border: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim.jfif') 30 round;
+  box-shadow: 0rem 0rem 1rem .25rem rgba(255, 2, 2, 0.936);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.cardItem>* {
+  line-height: 0;
+  max-height: 25%;
+}
+
+@media screen and (min-width: 4200px) {
+  .cardItem, .cardBack {
+     font-size: .4vw;
+  }
+}
+
+.cardSpot {
+  font-size: .6vw;
+  text-align: center;
+  width: 5vw;
+  height: 8vw;
+  border:  .25em rgba(117, 1, 1, 0.619) dashed;
+  color: rgba(117, 1, 1, 0.619);
+  font-family: headingFont;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.cardBack {
+  font-size: .4vw;
+  text-align: center;
+  width: 4.75vw;
+  height: 6.75vw;
+  max-width: 10rem;
+  max-height: 18rem;
+  background-image: url('./assets/panel-texture-gold.png');
+  background-size: cover;
+  border: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim.jfif') 30 round;
+  box-shadow: 0rem 0rem 1rem .25rem rgba(255, 2, 2, 0.936), 0rem 0rem .5rem .2rem black inset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardBack>* {
+  -webkit-animation: glow 2s ease-in-out infinite alternate;
+  -moz-animation: glow 2s ease-in-out infinite alternate;
+  animation: glow 2s ease-in-out infinite alternate;
+  color: hsla(0, 100%, 50%, 0.9);
+  font-family: headingFont;
+}
+
+.actionBtn {
+  color: hsl(116, 100%, 50%);
+  -webkit-animation: terminalBlink .75s infinite alternate;
+  -moz-animation: terminalBlink .75s infinite alternate;
+  animation: terminalBlink .75s infinite alternate;
+  background-color: transparent;
+  text-align: center;
+  border: none;
+}
+.actionBtn:hover {
+  color: rgba(66, 63, 255, 0.9);
+  -webkit-animation: terminalBlink2 .75s infinite alternate;
+  -moz-animation: terminalBlink2 .75s infinite alternate;
+  animation: terminalBlink2 .75s infinite alternate;
+}
+.actionBtn:disabled {
+  color: rgba(255, 1, 1, 0.296);
+  -webkit-animation: none;
+  -moz-animation: none;
+  animation: none;
+  border: none;
+}
+
+.playerSpot {
+  background-color: rgba(255, 0, 0, 0.664);
+  border: .25em rgba(66, 63, 255, 0.444) double;
+  border-radius: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 1em;
+  padding: 1.5em;
+}
+
+.w-25 {
+  width: 25%;
+}
+.w-50 {
+  width: 25%;
+}
+.w-75 {
+  width: 80%;
+}
+.w-80 {
+  width: 80%;
+}
+.h-25 {
+  height: 25%;
+}
+.h-50 {
+  height: 25%;
+}
+.h-80 {
+  height: 80%;
+}
+.h-100 {
+  height: 100%;
+}
+
+.h-0 {
+  height: auto;
+  max-height: 100%;
+}
+
+.gap-1 {
+  gap: 1.5em;
+}
+.gap-2 {
+  gap: 2em;
+}
+.border-25 {
+  border: .25em transparent solid;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.greenText {
+  color: hsl(116, 100%, 50%);
+  -webkit-animation: terminalBlink .75s infinite alternate;
+  -moz-animation: terminalBlink .75s infinite alternate;
+  animation: terminalBlink .75s infinite alternate;
+}
+
