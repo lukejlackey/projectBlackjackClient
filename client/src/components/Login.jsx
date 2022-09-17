@@ -43,7 +43,7 @@ const Login = () => {
 
     return (
         <div className="generalFlex flexCol">
-            <div className="container" id="login_title">
+            <div className="container-gold" id="login_title">
                 <h2 className="subTitle">Login</h2>
             </div>
             <form onSubmit={handleSubmit} className='w-80 generalFlex flexCol gap-1'>
@@ -63,7 +63,7 @@ const Login = () => {
                     <p className="flash_msgs" id="error_login_pw">{errors.error_login_pw}</p>
                 </div>
                 <div className="generalFlex w-80">
-                    <button className='screen redBtn' type="submit">Submit</button>
+                    <button className='screen-gold redBtn' type="submit">Submit</button>
                 </div>
             </form>
         </div>

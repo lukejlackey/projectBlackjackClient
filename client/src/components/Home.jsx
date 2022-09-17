@@ -20,7 +20,7 @@ const Home = () => {
 
     return (
         <div className='generalFlex flexCol'>
-            <div className='container' id="greeting">
+            <div className='container-gold' id="greeting">
                 <h2 className='subTitle'>Welcome to the Battlegrounds!</h2>
                 <div className='innerContainer'>
                     <em>
@@ -28,7 +28,7 @@ const Home = () => {
                     </em>
                     <p>
                     &emsp; We are glad you're here, merc!
-                    Here in the Battlegrounds, you can duke it out with up to 8 enemies in the deadliest game of them all: Blackjack.
+                    Here in the Battlegrounds, you can duke it out with up to 7 enemies in the deadliest game of them all: Blackjack.
                     </p>
                     <p>
                     &emsp; The goal of Blackjack is to have the highest score at the table without going over 21. At the beginning of the game, every player is dealt two cards: 1 face-up and 1 face-down.

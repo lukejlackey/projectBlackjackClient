@@ -45,7 +45,7 @@ const Register = () => {
 
     return (
         <div className="generalFlex flexCol">
-            <div className="container" id="register_title">
+            <div className="container-gold" id="register_title">
                 <h2 className="subTitle">Register</h2>
             </div>
             <form onSubmit={handleSubmit} className='w-80 generalFlex flexCol gap-1'>
@@ -70,7 +70,7 @@ const Register = () => {
                     <p className="flash_msgs" id="error_reg_conf_pw">{errors.error_reg_conf_pw}</p>
                 </div>
                 <div className="generalFlex w-80">
-                    <button className='redBtn screen' type="submit">Submit</button>
+                    <button className='redBtn screen-gold' type="submit">Submit</button>
                 </div>
             </form>
         </div>

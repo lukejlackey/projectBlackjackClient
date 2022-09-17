@@ -64,6 +64,10 @@ body {
   padding-bottom: 2em;
 }
 
+h2 {
+  padding: 0;
+}
+
 em {
   font-size: 1.25em;
   font-weight: lighter;
@@ -138,12 +142,20 @@ button {
   -webkit-animation: glow 2s ease-in-out infinite alternate;
   -moz-animation: glow 2s ease-in-out infinite alternate;
   animation: glow 2s ease-in-out infinite alternate;
+
 }
 
 .screen {
   background-color: black;
   border: .4vw solid transparent; 
   border-image: url('./assets/metal-trim.jfif') 30 round;
+  box-shadow: 0rem 0rem 1rem .25rem black;
+  transition: 0.2s ease-in-out;
+}
+.screen-gold {
+  background-color: black;
+  border: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim-gold.png') 30 round;
   box-shadow: 0rem 0rem 1rem .25rem black;
   transition: 0.2s ease-in-out;
 }
@@ -192,6 +204,7 @@ button {
   line-height: 1em;
   font-size: 4em;
   font-weight: lighter;
+  vertical-align: middle;
 }
 
 .subTitle2 {
@@ -216,6 +229,19 @@ button {
   background-color: black;
   border: .4vw solid transparent; 
   border-image: url('./assets/metal-trim.jfif') 30 round;
+  box-shadow: 0rem 0rem 1rem .25rem black;
+  text-align: center;
+}
+.container-gold {
+  width: 80%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  margin-right: auto;
+  margin-left: auto;
+  padding: .5em;
+  background-color: black;
+  border: .4vw solid transparent; 
+  border-image: url('./assets/metal-trim-gold.png') 30 round;
   box-shadow: 0rem 0rem 1rem .25rem black;
   text-align: center;
 }
@@ -266,6 +292,7 @@ button {
   border: .4vw solid transparent; 
   border-image: url('./assets/metal-trim-gold.png') 30 round;
   box-shadow: 0rem 0rem 1rem .25rem black;
+  transition: 0.2s ease-in-out;
 }
 
 .playerCard {
@@ -298,7 +325,7 @@ button {
   max-width: 10rem;
   max-height: 18rem;
   background-color: black;
-  border: .4vw solid transparent; 
+  border: .25vw solid transparent; 
   border-image: url('./assets/metal-trim.jfif') 30 round;
   box-shadow: 0rem 0rem 1rem .25rem rgba(255, 2, 2, 0.936);
   display: flex;
@@ -342,7 +369,7 @@ button {
   max-height: 18rem;
   background-image: url('./assets/panel-texture-gold.png');
   background-size: cover;
-  border: .4vw solid transparent; 
+  border: .25vw solid transparent; 
   border-image: url('./assets/metal-trim.jfif') 30 round;
   box-shadow: 0rem 0rem 1rem .25rem rgba(255, 2, 2, 0.936), 0rem 0rem .5rem .2rem black inset;
   display: flex;
@@ -380,6 +407,23 @@ button {
   -moz-animation: none;
   animation: none;
   border: none;
+}
+
+.dealBtn {
+  color: hsla(0, 100%, 50%, 0.9);
+  -webkit-animation: glow 2s ease-in-out infinite alternate;
+  -moz-animation: glow 2s ease-in-out infinite alternate;
+  animation: glow 2s ease-in-out infinite alternate;
+  background-color: transparent;
+  text-align: center;
+  border: none;
+  font-size: 3.5vw;
+}
+.dealtBtn:hover {
+  color: rgba(66, 63, 255, 0.9);
+  -webkit-animation: terminalBlink2 .75s infinite alternate;
+  -moz-animation: terminalBlink2 .75s infinite alternate;
+  animation: terminalBlink2 .75s infinite alternate;
 }
 
 .playerSpot {

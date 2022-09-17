@@ -1,15 +1,21 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import PlayerRow from './gameComponents/PlayerRow';
+import GameTable from './gameComponents/GameTable';
+import Winners from './gameComponents/Winners';
 
 const Game = React.memo(() => {
 
     const { userId } = useParams();
     const [dealt, setDealt] = useState(false);
-    const [playerList, setPlayerList] = useState([]);
-    const [cards, setCards] = useState({});
     const [fetched, setFetched] = useState(false);
     const [gameOver, setGameOver] = useState(false);
+    const [playerList, setPlayerList] = useState([]);
+    const [winners, setWinners] = useState([]);
+    const [topTable, setTopTable] = useState([]);
+    const [bottomTable, setBottomTable] = useState([]);
+    const [cards, setCards] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,23 +25,33 @@ const Game = React.memo(() => {
     }, [dealt])
 
     const userCheck = () => {
-        if(localStorage.getItem('p_id') !== userId) navigate('/dash')
-        if(!localStorage.getItem('activeGame')) navigate('/dash')
+        if(localStorage.getItem('p_id') !== userId || !localStorage.getItem('activeGame')) navigate('/dash')
+        console.log(playerList)
     }
 
     const fetchGameData = () => {
         axios.get(`http://127.0.0.1:5000/play/${userId}/game`)
         .then(res => {
             console.log(res.data);
-            if(res.data.players) setPlayerList(res.data.players);
+            if(res.data.players) {
+                setTable(res.data.players);
+            }
             else if(res.data.cards) {
                 addCards(res.data.cards);
             }
+            localStorage.removeItem('activeGame');
         })
         .catch(err => {
             console.log(err);
             navigate(-1);
         })
+    }
+
+    const setTable = (players) => {
+        setPlayerList(players);
+        const middle = Math.floor(players.length / 2);
+        setBottomTable(players.slice(0, middle));
+        setTopTable(players.slice(middle));
     }
 
     const addCards = (newCardObj) => {
@@ -49,147 +65,46 @@ const Game = React.memo(() => {
                         });
     }
 
-    const handleGameOver = () => {
-        console.log('GAME OVER')
-        setGameOver(true);
-
-    }
-
     const deal = () => {
+        localStorage.setItem('activeGame', 'true');
         setDealt(!dealt);
         console.log(cards)
     }
 
-    const hit = (e) => {
+    const sendMove = (e, move) => {
         e.preventDefault();
         axios.post(`http://127.0.0.1:5000/play/${userId}/game`,{
-            move:0
+            move: move
         })
             .then(res => {
                 console.log(res);
-                const result = res.data.game_over? handleGameOver() : addCards(res.data);
+                addCards(res.data);
+                if(res.data.game_over) handleGameOver();
             })
             .catch(err => console.log(err));
     }
 
+    const handleGameOver = () => {
+        console.log('GAME OVER')
+        setGameOver(true);
+        axios.get(`http://127.0.0.1:5000/play/${userId}/game`)
+            .then(res => {
+                console.log(res);
+                const winners = Object.keys(res.data)
+                                    .filter((k) => res.data[k] && k != 'winning_score')
+                
+            })
+    }
+
+
     return (
         <div className='game flexCol gap-1 w-80'>
-            <div className='generalFlex gap-1 h-25 border-25'>
-                {
-                    playerList.filter((p, i) => i < 4).map((p, i) => 
-                        <div key={i} className={`screen ${p.user_id == localStorage.getItem('p_id')? 'userCard' : 'playerCard' }`}>
-                            <h3 className='subTitle'>{p.name}</h3>
-                            <div className='generalFlex'>
-                                <p>Skill lvl: {p.skill_lvl}</p>
-                                <p>W/L Ratio: {p.wl_ratio}</p>
-                            </div>
-                            {
-                                p.user_id == localStorage.getItem('p_id')?
-                                <div className='generalFlex'>
-                                    <form className='generalFlex' onSubmit={hit}>
-                                        <button type='submit' className='actionBtn w-80' disabled={!dealt || gameOver}>HIT</button>
-                                    </form>
-                                    <form className='generalFlex'>
-                                        <button type='submit' className='actionBtn w-80' disabled={!dealt || gameOver}>STAND</button>
-                                    </form>
-                                </div>:''
-                            }
-                        </div>
-                    )
-                }
-            </div>
-            <div className='gameTable flexCol gap-1'>
-                {  
-                    <div className='generalFlex gap-1'>
-                        {
-                            playerList.filter((p, i) => i < 4).map((player, i) =>
-                                <div className='playerSpot'>
-                                    {
-                                        cards[i]?
-                                        cards[i].map((card, i) => 
-                                            i === 0?
-                                            <div className='cardBack'>
-                                                <p>B B</p>
-                                            </div>:
-                                            <div className='cardItem greenText'>
-                                                <div className='generalFlex'>
-                                                    <p>{card.suit}&emsp;{card.suit}</p>
-                                                </div>
-                                                <div className='generalFlex'>
-                                                    <p>{card.string_val}</p>
-                                                </div>
-                                                <div className='generalFlex'>
-                                                    <p>{card.suit}&emsp;{card.suit}</p>
-                                                </div>
-                                            </div>
-                                        ):
-                                        <div className='cardSpot'><p>HAND</p></div>
-                                    }
-                                </div>
-                            )
-                        }
-                    </div>
-                }
-                {
-                    !dealt?
-                    <button className='redBtn screen' onClick={deal}>Deal</button>:
-                    ''
-                }
-                {
-                    playerList.length > 4?
-                    <div className='generalFlex gap-1'>
-                        {
-                            playerList.filter((p, i) => i >= 4).map((player, i) =>
-                                <div className='playerSpot'>
-                                    {
-                                        cards[playerList.indexOf(player)]?
-                                        cards[playerList.indexOf(player)].map((card, i) => 
-                                            i === 0?
-                                            <div className='cardBack'>
-                                                <p>B B</p>
-                                            </div>:
-                                            <div className='cardItem greenText'>
-                                                <p>{card.suit}&emsp;{card.suit}</p>
-                                                <p>{card.string_val}</p>
-                                                <p>{card.suit}&emsp;{card.suit}</p>
-                                            </div>
-                                        ):
-                                        <div className='cardSpot'></div>
-                                    }
-                                </div>
-                            )
-                        }
-                    </div>:
-                    ''
-                }
-            </div>
+            <PlayerRow playerList={topTable} dealt={dealt} gameOver={gameOver} moveFunc={sendMove} />
+            <GameTable topTable={topTable} bottomTable={bottomTable} dealt={dealt} dealFunc={deal} gameOver={gameOver} cards={cards}/>
+            <PlayerRow playerList={bottomTable} dealt={dealt} gameOver={gameOver} moveFunc={sendMove} />
             {
-                playerList.length > 4?
-                <div className='generalFlex gap-1 h-25 border-25'>
-                    {
-                        playerList.filter((p, i) => i >= 4).map((p, i) => 
-                            <div key={i} className={`screen ${p.user_id == localStorage.getItem('p_id')? 'userCard' : 'playerCard' }`}>
-                                <h3 className='subTitle'>{p.name}</h3>
-                                <div className='generalFlex'>
-                                    <p>Skill lvl: {p.skill_lvl}</p>
-                                    <p>W/L Ratio: {p.wl_ratio}</p>
-                                </div>
-                                {
-                                    p.user_id == localStorage.getItem('p_id')?
-                                    <div className='generalFlex'>
-                                        <form className='generalFlex' onSubmit={hit}>
-                                            <button type='submit' className='actionBtn w-80' disabled={!dealt}>HIT</button>
-                                        </form>
-                                        <form className='generalFlex'>
-                                            <button type='submit' className='actionBtn w-80' disabled={!dealt}>STAND</button>
-                                        </form>
-                                    </div>:''
-                                }
-                            </div>
-                        )
-                    }
-                </div>:
-                ''
+                gameOver?
+                <Winners />:''
             }
         </div>
     )
