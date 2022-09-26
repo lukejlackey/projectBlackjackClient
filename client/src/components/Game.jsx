@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import PlayerRow from './gameComponents/PlayerRow';
@@ -25,26 +25,26 @@ const Game = React.memo(() => {
     }, [dealt])
 
     const userCheck = () => {
-        if(localStorage.getItem('p_id') !== userId || !localStorage.getItem('activeGame')) navigate('/dash')
+        if (localStorage.getItem('p_id') !== userId || !localStorage.getItem('activeGame')) navigate('/dash')
         console.log(playerList)
     }
 
     const fetchGameData = () => {
         axios.get(`http://127.0.0.1:5000/play/${userId}/game`)
-        .then(res => {
-            console.log(res.data);
-            if(res.data.players) {
-                setTable(res.data.players);
-            }
-            else if(res.data.cards) {
-                addCards(res.data.cards);
-            }
-            localStorage.removeItem('activeGame');
-        })
-        .catch(err => {
-            console.log(err);
-            navigate(-1);
-        })
+            .then(res => {
+                console.log(res.data);
+                if (res.data.players) {
+                    setTable(res.data.players);
+                }
+                else if (res.data.cards) {
+                    addCards(res.data.cards);
+                }
+                localStorage.removeItem('activeGame');
+            })
+            .catch(err => {
+                console.log(err);
+                navigate(-1);
+            })
     }
 
     const setTable = (players) => {
@@ -56,13 +56,13 @@ const Game = React.memo(() => {
 
     const addCards = (newCardObj) => {
         let newCards = newCardObj;
-        let newObj = {...cards};
+        let newObj = { ...cards };
         newCards = Object.keys(newCards)
-                        .filter((k) => k != 'game_over')
-                        .map((k) => {
-                            newObj[k] = cards[k]? cards[k].concat(newCards[k]) : newCards[k];
-                            setCards(newObj);
-                        });
+            .filter((k) => k != 'game_over')
+            .map((k) => {
+                newObj[k] = cards[k] ? cards[k].concat(newCards[k]) : newCards[k];
+                setCards(newObj);
+            });
     }
 
     const deal = () => {
@@ -73,38 +73,38 @@ const Game = React.memo(() => {
 
     const sendMove = (e, move) => {
         e.preventDefault();
-        axios.post(`http://127.0.0.1:5000/play/${userId}/game`,{
+        axios.post(`http://127.0.0.1:5000/play/${userId}/game`, {
             move: move
         })
             .then(res => {
                 console.log(res);
                 addCards(res.data);
-                if(res.data.game_over) handleGameOver();
+                if (res.data.game_over) handleGameOver();
             })
             .catch(err => console.log(err));
     }
 
     const handleGameOver = () => {
-        console.log('GAME OVER')
-        setGameOver(true);
         axios.get(`http://127.0.0.1:5000/play/${userId}/game`)
             .then(res => {
                 console.log(res);
-                const winners = Object.keys(res.data)
-                                    .filter((k) => res.data[k] && k != 'winning_score')
-                
+                setWinner(Object.keys(res.data)
+                    .filter((k) => res.data[k] && k != 'winning_score')
+                )
             })
+        console.log('GAME OVER')
+        setGameOver(true);
     }
 
 
     return (
         <div className='game flexCol gap-1 w-80'>
             <PlayerRow playerList={topTable} dealt={dealt} gameOver={gameOver} moveFunc={sendMove} />
-            <GameTable topTable={topTable} bottomTable={bottomTable} dealt={dealt} dealFunc={deal} gameOver={gameOver} cards={cards}/>
+            <GameTable topTable={topTable} bottomTable={bottomTable} dealt={dealt} dealFunc={deal} gameOver={gameOver} cards={cards} />
             <PlayerRow playerList={bottomTable} dealt={dealt} gameOver={gameOver} moveFunc={sendMove} />
             {
-                gameOver?
-                <Winners />:''
+                gameOver ?
+                    <Winners winnerList={winners} playerList={playerList} /> : ''
             }
         </div>
     )
